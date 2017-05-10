@@ -3,10 +3,10 @@ package com.example.demo.restservice
 import com.example.demo.logging.AppLogger
 import com.example.demo.restservice.domain.Tweet
 import com.example.demo.restservice.domain.TweetService
+import com.example.demo.restservice.util.runWeb
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.Bean
 import java.time.Instant
@@ -14,16 +14,6 @@ import java.time.Instant
 @SpringBootApplication
 open class DemoRestApplication {
     private val LOGGER = AppLogger.get(DemoRestApplication::class.java)
-
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            SpringApplicationBuilder()
-                    .sources(DemoRestApplication::class.java)
-                    .web(true)
-                    .run(*args)
-        }
-    }
 
     @Bean
     open fun init(
@@ -38,4 +28,8 @@ open class DemoRestApplication {
                 Tweet(id = "2", author = "seb", message = "message 1", createdAt = Instant.now())
         ).forEach { tweetService.submit(it) }
     }
+}
+
+fun main(args: Array<String>) {
+    runWeb(DemoRestApplication::class, *args)
 }
